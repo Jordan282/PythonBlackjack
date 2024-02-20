@@ -5,13 +5,13 @@ cardList = ["Ace" , "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen
 deck = [(card, suit) for card in cardList for suit in cardSuits]
 balance = 100
 
-def dealingDealerCards(dealerScore):
+def dealingDealerCards(dealerScore, dealerCards):
         while dealerScore < 17: 
             newCard = deck.pop()
-            #dealerCards.append(newCard)
+            dealerCards.append(newCard)
             dealerScore = dealerScore + cardValue(newCard)
             if dealerScore > 16:
-                break
+                return dealerScore
             elif dealerScore < 17:
                 continue
     
@@ -25,33 +25,40 @@ def gameResult(dealerScore, playerScore, playerBet, playerChoice, balance):
     elif dealerScore > 21:
         print("Dealer has:", dealerCards)
         print("Dealers score is:", dealerScore)
+        print("\n")
         print("Dealer busts")
         print("Player wins!")
         if playerChoice == "double down":
-            balance = balance + playerBet * 3    
+            balance = balance + playerBet * 4    
         else:
             balance = balance + playerBet * 2
     elif dealerScore < playerScore:
+        print("Player has:", playerCards)
+        print("Dealer has:", dealerCards)
+        print("\n")
         print("Dealer has:", dealerScore, "Player has:", playerScore)
         print("Player wins!")
         if playerChoice == "double down":
-            balance = playerBet * 3 + balance
-            print("Debug")     
+            balance = playerBet * 4 + balance    
         else:
             balance = balance + playerBet * 2
     elif dealerScore > playerScore:
+        print("Player has:", playerCards)
+        print("Dealer has:", dealerCards)
+        print("\n")
         print("Dealer has:", dealerScore, "Player has:", playerScore)
+        print("\n")
         print("Dealer wins!")
     elif playerScore == dealerScore:
         print("Player has:", playerCards)
-        print("Player has a score of:", playerScore)
-        print("\n")
         print("Dealer has:", dealerCards)
-        print("Dealers score is:", dealerScore)
+        print("\n")
+        print("Dealer has:", dealerScore, "Player has:", playerScore)
         print("\n")
         print("Both have the same score it's a tie...")
         balance = balance + playerBet
     return balance
+    
 
 
 while balance > 0:
@@ -104,15 +111,12 @@ while balance > 0:
                 newCard = deck.pop()
                 playerCards.append(newCard)
                 playerScore = sum(cardValue(card) for card in playerCards)
-                playerScore = 21
                 break
         else:
             print("Invalid choice or incorrect spelling try again")
             continue
-    dealingDealerCards(dealerScore)
+    dealerScore = dealingDealerCards(dealerScore, dealerCards)
     balance = gameResult(dealerScore, playerScore, playerBet, playerChoice, balance)
-    
-    
     
 print("Say goodbye to your life savings...")
 
