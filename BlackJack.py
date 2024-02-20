@@ -116,7 +116,7 @@ while balance > 0:
             print("Invalid choice or incorrect spelling try again")
             continue
     dealerScore = dealingDealerCards(dealerScore, dealerCards)
-    balance = gameResult(dealerScore, playerScore, playerBet, playerChoice, balance)
+    balance = gameResult(dealerScore, playerScore, playerBet, playerChoice, balance) 
     
 print("Say goodbye to your life savings...")
 
