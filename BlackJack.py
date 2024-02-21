@@ -56,7 +56,10 @@ def gameResult(dealerScore, playerScore, playerBet, playerChoice, balance):
         print("Dealer has:", dealerScore, "Player has:", playerScore)
         print("\n")
         print("Both have the same score it's a tie...")
-        balance = balance + playerBet
+        if playerChoice == "double down":
+            balance = balance + playerBet * 2
+        else:
+            balance = balance + playerBet
     return balance
     
 
@@ -81,7 +84,6 @@ while balance > 0:
     else:
         balance = balance - playerBet
     
-    print(balance)
     random.shuffle(deck)
     playerCards = [deck.pop(), deck.pop()]
     dealerCards = [deck.pop(), deck.pop()]
@@ -89,13 +91,16 @@ while balance > 0:
     while True:
         playerScore = sum(cardValue(card) for card in playerCards)
         dealerScore = sum(cardValue(card) for card in dealerCards)
+        print("\n")
         print("Player has:", playerCards)
         print("Player has a score of:", playerScore)
         print("\n")
+        print("Dealer has ", dealerCards[0],"and ???")
 
         if playerScore > 21:
             break
-    
+        
+        
         playerChoice = input("Would you like to hit, stand, or double down?:")
         if playerChoice == "hit":
             newCard = deck.pop()
@@ -111,11 +116,15 @@ while balance > 0:
                 newCard = deck.pop()
                 playerCards.append(newCard)
                 playerScore = sum(cardValue(card) for card in playerCards)
+                print("\n")
+                print("Player has:", playerCards)
+                input("You now have {playerScore} total... press enter to continue.".format(playerScore=playerScore))
                 break
         else:
             print("Invalid choice or incorrect spelling try again")
             continue
-    dealerScore = dealingDealerCards(dealerScore, dealerCards)
+    if dealerScore < 17:
+        dealerScore = dealingDealerCards(dealerScore, dealerCards)
     balance = gameResult(dealerScore, playerScore, playerBet, playerChoice, balance) 
     
 print("Say goodbye to your life savings...")
